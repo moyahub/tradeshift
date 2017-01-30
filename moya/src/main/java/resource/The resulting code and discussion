@@ -1,0 +1,131 @@
+
+Analysis and Design:
+=======================
+
+Requirement specification:
+--------------------------
+Triangle challenge
+Write a program that will determine the type of a triangle. It should take the lengths of the triangle's three sides as
+input, and return whether the triangle is equilateral (EQUILATERAL) (Three equal sides, Three equal angles, always 60°),
+isosceles (ISOSCELES)(Two equal sides, Two equal angles) or scalene(SCALENE)(No equal sides , Two equal angles).
+
+
+Design criteria, discussion and solution:
+-----------------------------------------
+based on requirement I choosed to implement a method called getTriangleType(side1,side2,side3) that returns triangle type.
+
+- TriangleType is defined as enum: see TriangleType.java
+  * EQUILATERAL, ISOSCELES, SCALENE,   // triangles classified by their side
+
+- Defined a Triangle class witch determines getTriangleType(side1,side2,side3)
+- main program that instantiate the Triangle and the calls the getTriangspecificationleType(side1,side2,side3) with
+  different input values based on these 3 types of triangle in requirement specification.
+
+Discussion board:
+-----------------
+Option1:
+  We can expand TriangleType enu by adding more triangle type. that is we can classify triangles
+  by their sides (as mention in above solution based on requirement) and classify triangles by their angels
+
+   *  ACUTE, RIGHT, OBTUSE, //triangle's classified by their angel
+   *  RIGHTISOSCELES,       //Combining the Names RIGHT and ISOSCELES: Has a right angle (90°), and also two equal angles
+
+Option2:
+  we can define ShapeType as enum which includes all the shape type like RECTANGLE, CIRCLE, SQUARE, TRIANGLE, plus all
+  the triangle types like below:
+
+      RECTANGLE, CIRCLE, SQUARE, TRIANGLE,
+      EQUILATERAL, ISOSCELES, SCALENE,   // triangels classified by their side
+      ACUTE, RIGHT, OBTUSE,              // triangels classfied by their angel
+      RIGHTISOSCELES,
+
+Shape
+-----
+Design principal (organizing of classes and methods):
+ - Inheritance and creation of class hierarchy
+
+ we can define a 'abstract Shape' class and let the Shape types like  Rectangle, Circle, Square, Triangle inherit from
+ it.
+
+ 'abstract' Shape class {
+     // contains variable(s), definiton method(s) and declaration of method(s).
+     // if calls has at least one declaration (without method body) it is an abstract method and then the class becomes
+     // abstract class
+ }
+
+ // concrete class that extends from Shape class
+ class Rectangle extends Shape {
+    // implements the abstract method(s) if the case
+    // plus more
+ }
+
+ class Circle extends Shape {
+     // implements the abstract methods
+     // plus more
+  }
+
+ class Square extends Shape {
+    // implements the abstract method(s) if the case
+    // plus more
+  }
+
+ class Triangle extends Shape {
+     // implements the abstract method(s) if the case
+     // plus more
+  }
+
+  But Why ?  because when we ask:  Which Shape ?? we need to answer more specific to this question. the answer cuould be
+  Rectangle, or Circle or Square or Triangle. because for example  Triangle 'IS A' Shape. It means we have a 'IS A'
+  relationship or association between 'Triangle' class and 'Shape' class.
+  If apply the same principal and ask the same question (which triangle ?) to Triangle class we get the following class
+  hierarchy. Because Equilateral or Isosceles or Scalene 'IS A' Triangle.
+
+   class Equilateral extends Triangle {
+      // ...
+    }
+
+
+Abstract and inheritance  versus Interface:
+-------------------------------------------
+As mentioned abstract class contains minimum one abstract method (without body, that is only declaration of the method)
+and perhaps one or more method definition (method body included).
+if so, my experience show that inheritance up to 4-5 level works well but more than that it reduce performance becuase
+of objcet creation from subclass up to supper class.
+
+Bu using interface which only contains the contracts (pr. default all methods declaration in interface are public
+abstract) and perhaps constants. These contacts mut be implemented in concrete class that implements the interface
+and this cost nothing because it is only compile checking to make sure that concrete class implements all the interface
+methods.
+
+interface Shape {
+    fillColor();
+}
+
+class Circle implements Shape {
+    fillColor() { ... }
+}
+
+class Triangle implements Shape {
+    fillColor() { ... }
+}
+
+NB! in multiple inheritance isn not allowed but multiple implementations of interface allowed.
+
+Factory Desigen pattern
+-----------------------
+we can use factory design pattern to create specific triangle type object (like Equilateral or Isosceles or Scalene)
+if we can develope and getInstance(TriangleType) method that instantiate and return the specific object.
+or if we choose Shape class we can develop getInstance(ShapeType) method that instantiate and return the specific object.
+What I mean is we can for example use TriangleFactory class to get a Triangle object. it will pass information
+(EQUILATERAL / ISOSCELES / SCALENE) to TriangleFactory to get the type of object it needs.
+
+
+Test Assumptions:
+-----------------
+Test Assumaptions: I think there is no correct answer to any testing problem. It depends on assumptions and
+judgement that test planner makes:
+
+ Minimal test:
+ -invalid input vaule such as string character like "A" or special character like "?"
+ -sides or length of a triangle can not be zero or negative number
+ -The sum of the two sides must be greater than the longest
